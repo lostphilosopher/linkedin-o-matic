@@ -34,7 +34,11 @@ class linkedinOmatic
 	// Education
     public function scrapeEducation () {
 
-		$education = trim(strip_tags($html->find('h3.summary')[0]->plaintext));    	
+		$school = trim(strip_tags($this->html->find('h3.summary')[0]->plaintext));    	
+
+		$education = array(
+			'school' => $school,
+		);
 
 		return $education;
     }
@@ -42,7 +46,7 @@ class linkedinOmatic
 	// Links
     public function scrapeLinks () {
 
-		$webUrls 	= $html->find('li.website a');
+		$webUrls 	= $this->html->find('li.website a');
 		foreach ($webUrls as $webUrl) {
 			$url 	= trim(strip_tags($webUrl->href));
 			$start 	= strpos($url, '=');
@@ -60,21 +64,25 @@ class linkedinOmatic
 	// Picture
 	public function scrapePicture () {
 
-		$pictureUrl = trim(strip_tags($html->find('img.photo')[0]->src));
+		$url = trim(strip_tags($this->html->find('img.photo')[0]->src));
 
-		return $pictureUrl;
+		$picture = array(
+			'url' => $url,
+		);
+
+		return $picture;
 	}
 
 	// Employment
 	public function scrapeEmployment () {
 
-		$description 	= trim(strip_tags($html->find('div.position p.description')[0]->plaintext));
-		$titles 		= $html->find('div.position span.title');
-		$organizations 	= $html->find('div.position span.org');
-		$locations	 	= $html->find('div.position span.location');
-		$startDates	 	= $html->find('div.position abbr.dtstart');
-		$endDates	 	= $html->find('div.position abbr.dtend');
-		$durations	 	= $html->find('div.position span.duration');
+		$description 	= trim(strip_tags($this->html->find('div.position p.description')[0]->plaintext));
+		$titles 		= $this->html->find('div.position span.title');
+		$organizations 	= $this->html->find('div.position span.org');
+		$locations	 	= $this->html->find('div.position span.location');
+		$startDates	 	= $this->html->find('div.position abbr.dtstart');
+		$endDates	 	= $this->html->find('div.position abbr.dtend');
+		$durations	 	= $this->html->find('div.position span.duration');
 		$numberOfJobs   = count($titles);
 		$i 				= 0;
 		while ($i < $numberOfJobs) {
@@ -90,5 +98,18 @@ class linkedinOmatic
 		}		
 
 		return $jobs;
+	}
+
+	public function scrapeAll () {
+
+		$profile = array();
+
+		$profile[] = array('basics' 		=> $this->scrapeBasics());
+		$profile[] = array('education' 		=> $this->scrapeEducation());
+		$profile[] = array('links' 			=> $this->scrapeLinks());
+		$profile[] = array('picture' 		=> $this->scrapePicture());
+		$profile[] = array('employment' 	=> $this->scrapeEmployment());
+
+		return $profile;
 	}
 }

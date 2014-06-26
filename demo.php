@@ -10,29 +10,40 @@ $locality 	= $linkedinOmatic->scrapeBasics()['locality'];
 $industry 	= $linkedinOmatic->scrapeBasics()['industry'];
 $headline 	= $linkedinOmatic->scrapeBasics()['headline'];
 
+// Education
+$school 	= $linkedinOmatic->scrapeEducation()['school']; 
+
+// Links
+$links = $linkedinOmatic->scrapeLinks();
+
+// Picture
+$picture = $linkedinOmatic->scrapePicture()['url'];
+
+// Employment
+$employments = $linkedinOmatic->scrapeEmployment();
+
 /*
  * DEMO
  * (Terminal)
  */
 echo $name . PHP_EOL;
 echo $locality . ' - ' . $industry . PHP_EOL;
-//echo $pictureUrl . PHP_EOL;
+echo $picture . PHP_EOL;
 
 echo $headline . PHP_EOL;
 //echo $description . PHP_EOL;
 
-/*
-echo $education . PHP_EOL . PHP_EOL;
 
-foreach ($websiteUrls as $websiteUrl) {
-	echo $websiteUrl['type'] . ': ' . $websiteUrl['url'] . PHP_EOL;
+echo $school . PHP_EOL . PHP_EOL;
+
+foreach ($links as $link) {
+	echo $link['type'] . ': ' . $link['url'] . PHP_EOL;
 }
 echo PHP_EOL;
 
-foreach ($jobs as $job) {
-	echo $job['title']. PHP_EOL;
-	echo $job['organization'] . ', ' . $job['location'] . PHP_EOL;
-	echo $job['startDate'] . ' - ' . $job['endDate'] . ' (' . $job['durations'] . ')';
+foreach ($employments as $employment) {
+	echo $employment['title']. PHP_EOL;
+	echo $employment['organization'] . ', ' . $employment['location'] . PHP_EOL;
+	echo $employment['startDate'] . ' - ' . $employment['endDate'] . ' (' . $employment['durations'] . ')';
 	echo PHP_EOL . PHP_EOL;
 }
-*/
