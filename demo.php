@@ -31,8 +31,7 @@ echo $locality . ' - ' . $industry . PHP_EOL;
 echo $picture . PHP_EOL;
 
 echo $headline . PHP_EOL;
-//echo $description . PHP_EOL;
-
+echo $employments[0]['description'] . PHP_EOL;
 
 echo $school . PHP_EOL . PHP_EOL;
 
