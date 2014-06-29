@@ -95,10 +95,13 @@ class linkedinOmatic
 			$end 	= strpos($url, '&url'); // Must be the last character following the url 
 			$length = $end - $start;
 
-			$websiteUrls[] = array(
-				'type' => trim(strip_tags($webUrl->plaintext)),
-				'url' => substr($url, $start + 1, $length - 1),
-			);
+			$type = trim(strip_tags($webUrl->plaintext));
+			if (in_array($type, array('Personal Website', 'Company Website'))) {
+				$websiteUrls[] = array(
+					'type' => $type,
+					'url' => substr($url, $start + 1, $length - 1),
+				);
+			}
 		}
 
 		return $websiteUrls;
