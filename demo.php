@@ -2,7 +2,17 @@
 
 include('linkedinOmatic.php');
 
-$linkedinOmatic = new linkedinOmatic('https://www.linkedin.com/in/wyattandersen');
+parse_str(implode('&', array_slice($argv, 1)), $_GET);
+
+if (!isset($_GET['target'])) {
+	$targetUrl = 'https://www.linkedin.com/in/wyattandersen';
+} else {
+	$targetUrl = $_GET['target'];
+}
+
+$linkedinOmatic = new linkedinOmatic($targetUrl);
+
+
 
 // Basics
 $name 		= $linkedinOmatic->scrapeBasics()['name'];

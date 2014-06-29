@@ -1,7 +1,11 @@
 <?php 
 
-include('simple_html_dom.php');
+include('simple_html_dom.php'); // http://simplehtmldom.sourceforge.net/
 
+/** 
+ * LinkedIn-O-Matic extracts info from a LinkedIn user's
+ * public profile page via scrapping.
+*/
 class linkedinOmatic 
 {
 	private $targetUrl 	= null;
@@ -27,13 +31,22 @@ class linkedinOmatic
 	const LOCATIONS_QUERY 		= 'div.background-experience span.locality';
 	const DURATIONS_QUERY 		= 'span.experience-date-locale time';
 
+	/** 
+	 * Constructor
+	 *
+	 * @param string URL to a LinkedIn user's public profile 
+	*/
     function __construct($targetUrl)
     {
         $this->targetUrl = $targetUrl;
         $this->html = file_get_html((string) $targetUrl);
     }	
 
-	// Basics
+	/** 
+	 * Scrapes the header level information about a user
+	 *
+	 * @return array
+	*/
     public function scrapeBasics () {
 
 		$name 		 	= trim(strip_tags($this->html->find(self::NAME_QUERY)[0]->plaintext));
@@ -51,7 +64,11 @@ class linkedinOmatic
 		return $basics;
     }
 
-	// Education
+	/** 
+	 * Scrapes the user's education history
+	 *
+	 * @return array
+	*/
     public function scrapeEducation () {
 
 		$school = trim(strip_tags($this->html->find(self::SCHOOL_QUERY)[0]->plaintext));    	
@@ -63,7 +80,11 @@ class linkedinOmatic
 		return $education;
     }
 
-	// Links
+	/** 
+	 * Scrapes the links the user has provided to their personal website etc
+	 *
+	 * @return array
+	*/
     public function scrapeLinks () {
 
 		$webUrls 	= $this->html->find(self::LINKS_QUERY);
@@ -83,7 +104,11 @@ class linkedinOmatic
 		return $websiteUrls;
 	}
 
-	// Picture
+	/** 
+	 * Scrapes the path to the user's profile photo
+	 *
+	 * @return array
+	*/
 	public function scrapePicture () {
 
 		$url = trim(strip_tags($this->html->find('div.profile-picture img')[0]->src));
@@ -95,7 +120,11 @@ class linkedinOmatic
 		return $picture;
 	}
 
-	// Employment
+	/** 
+	 * Scrapes the links the user's employment history
+	 *
+	 * @return array
+	*/
 	public function scrapeEmployment () {
 
 		$description 	= trim(strip_tags($this->html->find(self::DESCRIPTIONS_QUERY)[0]->plaintext));
@@ -118,13 +147,18 @@ class linkedinOmatic
 				'durations' 	=> str_replace(array('(',')'), '', trim(strip_tags($durations[$n + 2]->plaintext))),
 			);
 			$i = $i + 1;
-			$n = $n + 3; // As of 06/29/14 LinkedIn isn't provide unique date identifiers
+			$n = $n + 3; // As of 06/29/14 LinkedIn isn't providing unique date identifiers
 		}
 
 		return $jobs;
 	}
 
-	// Wrapper method for all scraping methods
+	/** 
+	 * Wrapper method for all the available scrapping methods
+	 *
+	 * @todo Experimental and untested...
+	 * @return array
+	*/
 	public function scrapeAll () {
 
 		$profile = array();
