@@ -29,8 +29,9 @@ echo $locality . ' - ' . $industry . PHP_EOL;
 echo $headline . PHP_EOL;
 
 $employments = $linkedinOmatic->scrapeEmployment();
-echo $employments[0]['description'] . PHP_EOL . PHP_EOL;
-
+if ($employments) {
+	echo $employments[0]['description'] . PHP_EOL . PHP_EOL;
+}
 // Education
 $school 	= $linkedinOmatic->scrapeEducation()['school']; 
 
